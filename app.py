@@ -31,7 +31,11 @@ def load_metrics_summary():
     return df
     
 df = load_data()
-metrics_summary_df = load_metrics_summary()
+try:
+    metrics_summary_df = load_metrics_summary()
+except Exception as e:
+    st.error(f"❌ Error cargando tabla MetricsSummary: {e}")
+    st.stop()
 
 
 st.sidebar.title("Filtros")
