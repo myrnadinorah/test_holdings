@@ -24,7 +24,7 @@ def load_data():
     
 @st.cache_data
 def load_metrics_summary():
-    query = "SELECT * FROM MetricsSummary"
+    query = "SELECT * FROM Metrics"
     df = pd.read_sql(query, con=engine)
     df['start_date'] = pd.to_datetime(df['start_date'])
     df['end_date'] = pd.to_datetime(df['end_date'])
