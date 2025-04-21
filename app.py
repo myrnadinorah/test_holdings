@@ -21,6 +21,17 @@ def load_data():
     df = pd.read_sql(query, con=engine)
     df['date'] = pd.to_datetime(df['date'])
     return df
+    
+@st.cache_data
+def load_metrics():
+    query = """
+    SELECT portfolio_id, date, metric_name, metric_value
+    FROM Metrics
+    WHERE date >= CURDATE() - INTERVAL 7 DAY
+    """
+    df = pd.read_sql(query, con=engine)
+    df['date'] = pd.to_datetime(df['date'])
+    return df
 
 df = load_data()
 
@@ -54,3 +65,23 @@ if not filtered_df.empty:
     st.altair_chart(chart, use_container_width=True)
 else:
     st.warning("No hay datos para la fecha y portafolio seleccionados.")
+
+metrics_df = load_metrics()
+
+filtered_metrics = metrics_df[
+    (metrics_df["date"] == pd.to_datetime(date_selected)) &
+    (metrics_df["portfolio_id"] == portfolio_selected)
+]
+
+pivot_metrics = filtered_metrics.pivot_table(
+    index=["portfolio_id", "date"],
+    columns="metric_name",
+    values="metric_value"
+).reset_index()
+
+st.subheader("📈 Métricas del Portafolio")
+
+if not pivot_metrics.empty:
+    st.dataframe(pivot_metrics)
+else:
+    st.info("No hay métricas para el portafolio y fecha seleccionados.")
