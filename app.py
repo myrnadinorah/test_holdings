@@ -24,7 +24,7 @@ def load_data():
     
 @st.cache_data
 
-def load_metrics_summary():
+def METRICS():
     # Define la consulta SQL para seleccionar las columnas deseadas
     query = """
     SELECT 
@@ -93,7 +93,7 @@ def load_metrics_summary():
 
 df = load_data()
 try:
-    metrics_summary_df = load_metrics_summary()
+    metrics_summary_df = METRICS()
 except Exception as e:
     st.error(f"❌ Error cargando tabla MetricsSummary: {e}")
     st.stop()
