@@ -22,8 +22,6 @@ def load_data():
     df['date'] = pd.to_datetime(df['date'])
     return df
     
-@st.cache_data
-
 def METRICS():
     # Define la consulta SQL para seleccionar las columnas deseadas
     query = """
