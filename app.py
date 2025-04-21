@@ -34,7 +34,7 @@ def load_metrics():
     return df
 
 df = load_data()
-
+df = load_metrics()
 st.sidebar.title("Filtros")
 
 min_date = datetime.today() - timedelta(days=7)
