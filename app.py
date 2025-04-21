@@ -33,10 +33,6 @@ def load_metrics_summary():
 df = load_data()
 metrics_summary_df = load_metrics_summary()
 
-# Filtro por portfolio_id
-filtered_summary = metrics_summary_df[
-    metrics_summary_df["portfolio_id"] == portfolio_selected
-]
 
 st.sidebar.title("Filtros")
 
@@ -50,6 +46,10 @@ portfolio_selected = st.sidebar.selectbox("Selecciona un portafolio", available_
 filtered_df = df[
     (df["date"] == pd.to_datetime(date_selected)) &
     (df["portfolio_id"] == portfolio_selected)
+]
+# Filtro por portfolio_id
+filtered_summary = metrics_summary_df[
+    metrics_summary_df["portfolio_id"] == portfolio_selected
 ]
 
 st.title("Gráfica de Holdings por Portafolio")
