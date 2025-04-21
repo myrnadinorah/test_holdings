@@ -24,17 +24,20 @@ def load_data():
     
 @st.cache_data
 def load_metrics():
-    query = """
-    SELECT portfolio_id, date, metric_name, metric_value
-    FROM Metrics
-    WHERE date >= CURDATE() - INTERVAL 7 DAY
-    """
+    query = "SELECT * FROM MetricsSummary"
     df = pd.read_sql(query, con=engine)
-    df['date'] = pd.to_datetime(df['date'])
+    df['start_date'] = pd.to_datetime(df['start_date'])
+    df['end_date'] = pd.to_datetime(df['end_date'])
     return df
-
+    
 df = load_data()
-df = load_metrics()
+metrics_summary_df = load_metrics_summary()
+
+# Filtro por portfolio_id
+filtered_summary = metrics_summary_df[
+    metrics_summary_df["portfolio_id"] == portfolio_selected
+]
+
 st.sidebar.title("Filtros")
 
 min_date = datetime.today() - timedelta(days=7)
@@ -66,22 +69,9 @@ if not filtered_df.empty:
 else:
     st.warning("No hay datos para la fecha y portafolio seleccionados.")
 
-metrics_df = load_metrics()
+st.subheader("📊 Métricas")
 
-filtered_metrics = metrics_df[
-    (metrics_df["date"] == pd.to_datetime(date_selected)) &
-    (metrics_df["portfolio_id"] == portfolio_selected)
-]
-
-pivot_metrics = filtered_metrics.pivot_table(
-    index=["portfolio_id", "date"],
-    columns="metric_name",
-    values="metric_value"
-).reset_index()
-
-st.subheader("📈 Métricas del Portafolio")
-
-if not pivot_metrics.empty:
-    st.dataframe(pivot_metrics)
+if not filtered_summary.empty:
+    st.dataframe(filtered_summary)
 else:
-    st.info("No hay métricas para el portafolio y fecha seleccionados.")
+    st.info("No hay métricas para el portafolio seleccionado.")
