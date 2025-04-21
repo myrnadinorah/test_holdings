@@ -91,10 +91,11 @@ def METRICS():
 
 df = load_data()
 try:
-    metrics_summary_df = METRICS()
+    metrics_summary_df = METRICS()  # Cambié esta línea
 except Exception as e:
     st.error(f"❌ Error cargando tabla MetricsSummary: {e}")
     st.stop()
+
 
 
 st.sidebar.title("Filtros")
