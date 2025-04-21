@@ -3,6 +3,8 @@ import pandas as pd
 import altair as alt
 from sqlalchemy import create_engine
 from datetime import datetime, timedelta
+import os
+from dotenv import load_dotenv
 
 st.set_page_config(page_title="Holdings por Portafolio", layout="wide")
 load_dotenv()
