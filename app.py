@@ -24,69 +24,13 @@ def load_data():
     
 @st.cache_data
 def load_metrics_summary():
-    query = """
-    SELECT 
-        id,
-        portfolio_id,
-        start_date,
-        end_date,
-        average_daily_value,
-        median_daily_value,
-        max_daily_value,
-        min_daily_value,
-        cumulative_return_percent,
-        cagr_percent,
-        year_to_date_percent,
-        last_year_percent,
-        two_years_percent,
-        hit_rate_percent,
-        value_at_risk_var,
-        conditional_var_cvar,
-        sharpe_ratio,
-        sortino_ratio,
-        max_drawdown_percent,
-        volatility_ann_percent,
-        calmar_ratio,
-        skew,
-        kurtosis,
-        recovery_factor,
-        sp500_cumulative_return_percent,
-        treynor_index,
-        beta,
-        alpha,
-        risk_parity,
-        mean_drawdown_depth,
-        maximum_drawdown_recovery_time,
-        omega_ratio,
-        ulcer_index,
-        tail_ratio,
-        gain_to_pain_ratio
-    FROM Metrics
-    """
-    
-    # Cargar los datos usando pandas
+    query = "SELECT * FROM Metrics"
     df = pd.read_sql(query, con=engine)
-
-    # Convertir las columnas de fechas a datetime
     df['start_date'] = pd.to_datetime(df['start_date'])
     df['end_date'] = pd.to_datetime(df['end_date'])
-
-    # Convertir las columnas numéricas a los tipos adecuados si es necesario
-    numeric_columns = [
-        'average_daily_value', 'median_daily_value', 'max_daily_value', 'min_daily_value', 
-        'cumulative_return_percent', 'cagr_percent', 'year_to_date_percent', 'last_year_percent',
-        'two_years_percent', 'hit_rate_percent', 'value_at_risk_var', 'conditional_var_cvar', 
-        'sharpe_ratio', 'sortino_ratio', 'max_drawdown_percent', 'volatility_ann_percent', 
-        'calmar_ratio', 'skew', 'kurtosis', 'recovery_factor', 'sp500_cumulative_return_percent', 
-        'treynor_index', 'beta', 'alpha', 'risk_parity', 'mean_drawdown_depth', 
-        'maximum_drawdown_recovery_time', 'omega_ratio', 'ulcer_index', 'tail_ratio', 'gain_to_pain_ratio'
-    ]
-    
-    # Convertir columnas numéricas a tipo float
-    df[numeric_columns] = df[numeric_columns].apply(pd.to_numeric, errors='coerce')
-
     return df
-    
+
+
 df = load_data()
 try:
     metrics_summary_df = load_metrics_summary()
