@@ -26,8 +26,8 @@ def load_data():
 def load_metrics_summary():
     query = "SELECT * FROM Metrics"
     df = pd.read_sql(query, con=engine)
-    df['start_date'] = pd.to_datetime(df['start_date'])
-    df['end_date'] = pd.to_datetime(df['end_date'])
+    #df['start_date'] = pd.to_datetime(df['start_date'])
+    #df['end_date'] = pd.to_datetime(df['end_date'])
     return df
 
 
