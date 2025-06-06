@@ -169,9 +169,10 @@ def contains_blacklisted_phrase(text: str) -> bool:
         if re.search(pattern, text):
             return True
     return False
-
-
 def get_finviz_news(ticker: str) -> list[dict]:
+    import requests
+    from bs4 import BeautifulSoup
+
     url = f"https://finviz.com/quote.ashx?t={ticker}"
     headers = {"User-Agent": "Mozilla/5.0"}
     page = requests.get(url, headers=headers)
@@ -183,9 +184,15 @@ def get_finviz_news(ticker: str) -> list[dict]:
 
     filtered_news = []
     for row in news_table.find_all("tr"):
-        link = row.a.get("href", "")
-        headline = row.a.text.strip()
-        time_data = row.td.text.strip()
+        a_tag = row.find("a")
+        td_tag = row.find("td")
+
+        if not a_tag or not td_tag:
+            continue
+
+        link = a_tag.get("href", "")
+        headline = a_tag.text.strip()
+        time_data = td_tag.text.strip()
 
         if (
             link.startswith("https://finance.yahoo.com/")
