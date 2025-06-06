@@ -6,6 +6,7 @@ altair
 python-dotenv
 requests
 re
+BeautifulSoup
 bs4 
 datetime
 io.StringIO	
