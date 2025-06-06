@@ -5,10 +5,5 @@ pymysql
 altair
 python-dotenv
 requests
-re
-BeautifulSoup
-bs4 
-datetime
-io.StringIO	
+beautifulsoup4
 boto3
-os
