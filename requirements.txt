@@ -4,3 +4,10 @@ sqlalchemy
 pymysql
 altair
 python-dotenv
+requests
+re
+bs4 
+datetime
+io.StringIO	
+boto3
+os
